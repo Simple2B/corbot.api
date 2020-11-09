@@ -4,6 +4,7 @@ email-validator
 flake8
 Flask
 Flask-Login
+Flask-RESTful
 Flask-SQLAlchemy
 Flask-WTF
 itsdangerous
