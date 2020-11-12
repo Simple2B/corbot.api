@@ -9,6 +9,10 @@ from werkzeug.exceptions import HTTPException
 login_manager = LoginManager()
 db = SQLAlchemy()
 
+from app.controllers.db_handler import DB1
+db1 = DB1()
+metadata = db1.metadata
+session = db1.session
 
 def create_app(environment="development"):
 
