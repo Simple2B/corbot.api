@@ -3,18 +3,21 @@ import json
 from flask import render_template, Blueprint, request
 
 from app.controllers.dispatcher import dispatch
+from app.controllers.ip_login import ip_login
 from app.forms import TestingForm
 
 main_blueprint = Blueprint("main", __name__)
 
 
 @main_blueprint.route("/", methods=['GET'])
+@ip_login
 def index():
     form = TestingForm()
     return render_template("index.html", form=form)
 
 
 @main_blueprint.route("/api", methods=['POST'])
+@ip_login
 def api():
     if request.json:
         json_data = request.json  # dict
@@ -24,3 +27,4 @@ def api():
         data = json.loads(form.Data.data)
         res = {"request": form.Method.data, "data": data}
         return json.dumps(dispatch(res))
+    return {}

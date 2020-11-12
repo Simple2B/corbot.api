@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField 
+from wtforms import StringField, SubmitField, TextAreaField
 
 
 class TestingForm(FlaskForm):
