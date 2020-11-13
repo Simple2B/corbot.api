@@ -3,6 +3,12 @@ from sqlalchemy import Table
 
 from app import session, metadata
 
+from app.controllers.res_to_json import res_to_json
+
+
+# def arguments_to_function(func):
+#     a = func.__code__.co_varnames
+
 
 def get_page_limit(data: dict) -> dict:
     pass
@@ -10,7 +16,12 @@ def get_page_limit(data: dict) -> dict:
 
 def api_sum_example(data: dict) -> dict:
     res = int(data['first_argument']) + int(data['second_argument'])
-    return {"res": res}
+    return res
+
+
+def api_sum_array_example(data: dict) -> dict:
+    res = sum(data)
+    return res
 
 
 def service_ident(data):
@@ -28,13 +39,14 @@ def service_ident(data):
         pos1 = svc_phrases.find(subject)
         if pos1 >= 0:
             svc_requested = svc_name
-    return {'svc_requested': svc_requested}
+    return svc_requested
 
 
 MAP = {
     "get_page_limit": get_page_limit,
     'sum': api_sum_example,
     'service_ident': service_ident,
+    'array': api_sum_array_example,
 }
 
 
@@ -45,4 +57,5 @@ def dispatch(request_data: dict):
             # abort("Unknown method")
             pass
         method = MAP[method_name]
-        return method(request_data["data"])
+        # res_to_json converts function responce to standart format
+        return res_to_json(method(request_data["data"]))

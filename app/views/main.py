@@ -20,11 +20,12 @@ def index():
 @ip_login
 def api():
     if request.json:
-        json_data = request.json  # dict
-        return json.dumps(dispatch(json_data))
-    form = TestingForm()
+        json_data = request.json  # automatically converted to dict
+        return json.dumps(dispatch(json_data))  # dispatch does all work, except converting to json
+    form = TestingForm()  # form to test from admin dashboard
     if form.validate_on_submit():
-        data = json.loads(form.Data.data)
+        data = json.loads(form.Data.data)  # json is entered to TextArea field called Data
+        # then it it is converted to json to simulate real application
         res = {"request": form.Method.data, "data": data}
         return json.dumps(dispatch(res))
     return {}
