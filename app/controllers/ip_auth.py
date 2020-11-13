@@ -6,6 +6,7 @@ from flask import request
 # here one has to put all IPs of bots and any other that are going to be used to test this application
 GOOD_IPS = ['127.0.0.1']
 
+# for disable IP authorization set IP_AUTH_ENABLED in .env to value N
 IP_AUTH_ENABLED = not os.environ.get("IP_AUTH_ENABLED", "Y") in ("n", "N", "False", "false", "0")
 
 
