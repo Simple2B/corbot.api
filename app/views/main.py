@@ -28,5 +28,5 @@ def api():
         data = json.loads(form.Data.data)  # json is entered to TextArea field called Data
         # then it it is converted to json to simulate real application
         res = {"request": form.Method.data, "data": data}
-        return json.dumps(dispatch(res))
+        return json.dumps(dispatch(res), indent=4, sort_keys=True, default=str)
     return {}
