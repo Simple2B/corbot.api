@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -39,6 +40,11 @@ def create_app(environment="development"):
     # Error handlers.
     @app.errorhandler(HTTPException)
     def handle_http_error(exc):
-        return render_template("error.html", error=exc), exc.code
+        error_dict = {
+            'error': exc,
+            "code": exc.code
+        }
+        # return render_template("error.html", error=exc), exc.code
+        return json.dumps(error_dict, indent=4, sort_keys=True, default=str)
 
     return app
