@@ -3,8 +3,6 @@ from sqlalchemy import Table
 
 from app import session, metadata
 
-from app.controllers.res_to_json import res_to_json
-
 
 # def arguments_to_function(func):
 #     a = func.__code__.co_varnames
@@ -78,4 +76,4 @@ def dispatch(request_data: dict):
             pass
         method = MAP[method_name]
         # res_to_json converts function responce to standart format
-        return res_to_json(method(request_data["data"]))
+        return method(request_data["data"])
