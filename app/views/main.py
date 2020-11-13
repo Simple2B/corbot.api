@@ -3,21 +3,21 @@ import json
 from flask import render_template, Blueprint, request
 
 from app.controllers.dispatcher import dispatch
-from app.controllers.ip_login import ip_login
+from app.controllers.ip_auth import ip_auth
 from app.forms import TestingForm
 
 main_blueprint = Blueprint("main", __name__)
 
 
 @main_blueprint.route("/", methods=['GET'])
-@ip_login
+@ip_auth
 def index():
     form = TestingForm()
     return render_template("index.html", form=form)
 
 
 @main_blueprint.route("/api", methods=['POST'])
-@ip_login
+@ip_auth
 def api():
     if request.json:
         json_data = request.json  # automatically converted to dict
