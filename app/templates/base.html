@@ -36,24 +36,6 @@
             </li>
           </ul>
           <!-- Login/Logout -->
-          <ul class="navbar-nav ml-auto">
-            {% if current_user.is_authenticated %}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="userActions" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">{{current_user.username | capitalize}}</a>
-              <div class="dropdown-menu" aria-labelledby="userActions">
-                <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
-              </div>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
-            </li>
-            {% endif %}
-          </ul>
         </div>
       </div>
     </nav>
@@ -82,26 +64,6 @@
           <h6 id='about' class="text-uppercase font-weight-bold mb-4">About</h6>
           <p class="font-italic text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
             eiusmod tempor incididunt.</p>
-        </div>
-        <div class="col-lg-2 col-md-3 mb-4 mb-lg-0">
-          <h6 class="text-uppercase font-weight-bold mb-4">Quick Links</h6>
-          <ul class="list-unstyled mb-0">
-            <li class="mb-2"><a href="{{ url_for('auth.login') }}" class="text-muted">Login</a></li>
-            <li class="mb-2"><a href="{{ url_for('auth.register') }}" class="text-muted">Register</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-3 mb-4 mb-lg-0">
-          <h6 class="text-uppercase font-weight-bold mb-4">Social Links</h6>
-          <ul class="list-unstyled mb-0">
-            <li class="list-item"><a href="https://facebook.com" target="_blank" title="facebook"><span
-                  class="fa fa-facebook">Facebook</span></a>
-            </li>
-            <li class="list-item"><a href="https://twitter.com" target="_blank" title="twitter"><span
-                  class="fa fa-twitter"></span>Twitter</a>
-            </li>
-            <li class="list-item"><a href="https://instagram.com" target="_blank" title="instagram"><span
-                  class="fa fa-instagram"></span>Instagram</a></li>
-          </ul>
         </div>
       </div>
       <!-- Copyrights -->
