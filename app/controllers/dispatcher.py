@@ -1,7 +1,7 @@
 
 from sqlalchemy import Table
 
-from app import session, metadata
+from app import metadata
 
 
 # def arguments_to_function(func):

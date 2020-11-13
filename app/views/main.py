@@ -21,7 +21,8 @@ def index():
 def api():
     if request.json:
         json_data = request.json  # automatically converted to dict
-        return json.dumps(dispatch(json_data), indent=4, sort_keys=True, default=str)  # dispatch does all work, except converting to json
+        # dispatch does all work, except converting to json
+        return json.dumps(dispatch(json_data), indent=4, sort_keys=True, default=str)
     form = TestingForm()  # form to test from admin dashboard
     if form.validate_on_submit():
         data = json.loads(form.Data.data)  # json is entered to TextArea field called Data
