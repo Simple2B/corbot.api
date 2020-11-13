@@ -1,7 +1,7 @@
 import os
 import json
 
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.exceptions import HTTPException
 

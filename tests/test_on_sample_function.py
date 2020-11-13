@@ -1,7 +1,5 @@
 import pytest
 
-from flask import jsonify
-
 from app import create_app
 
 
