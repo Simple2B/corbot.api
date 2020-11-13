@@ -76,4 +76,4 @@ def dispatch(request_data: dict):
             pass
         method = MAP[method_name]
         # res_to_json converts function responce to standart format
-        return method(request_data["data"])
+        return dict(request=method_name, data=method(request_data["data"]))
