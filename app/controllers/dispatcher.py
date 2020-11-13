@@ -10,10 +10,6 @@ from app.controllers.res_to_json import res_to_json
 #     a = func.__code__.co_varnames
 
 
-def get_page_limit(data: dict) -> dict:
-    pass
-
-
 def api_sum_example(data: dict) -> dict:
     res = int(data['first_argument']) + int(data['second_argument'])
     return res
@@ -42,11 +38,35 @@ def service_ident(data):
     return svc_requested
 
 
+def get_page_limit(data):
+    plan_id = data['plan_id']
+    plans = Table("plans", metadata, autoload=True)
+    qry = plans.select().where(plans.c.plan_id == plan_id)
+    res = qry.execute()
+    for row in res:
+        plan_data = dict(row)
+    page_limit = plan_data["page_cnt"]
+    return page_limit
+
+
+def get_client(data):
+    client_id = data['client_id']
+    clients = Table("clients", metadata, autoload=True)
+    qry = clients.select().where(clients.c.client_id == client_id).limit(1)
+    res = qry.execute()
+    client_data = {}
+    for row in res:
+        client_data = dict(row)
+    return client_data
+
+
 MAP = {
     "get_page_limit": get_page_limit,
     'sum': api_sum_example,
     'service_ident': service_ident,
     'array': api_sum_array_example,
+    'get_page_limit': get_page_limit,
+    'get_client': get_client,
 }
 
 
