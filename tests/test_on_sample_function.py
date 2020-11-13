@@ -1,6 +1,6 @@
-import json
-
 import pytest
+
+from flask import jsonify
 
 from app import create_app
 
@@ -27,7 +27,6 @@ def test_on_sample_function(client):
             "second_argument": second_argument
         }
     }
-    json_data = json.dumps(request_dict)
-    response = client.post('/api', json=json_data)
+    response = client.post('/api', json=request_dict)
     assert response.status_code == 200
-    assert json.loads(response.data)['array_res'][0] == 90
+    assert int(response.data.decode()) == 90
