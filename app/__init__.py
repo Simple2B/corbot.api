@@ -1,9 +1,8 @@
 import os
 import json
 
-from flask import Flask
+from flask import Flask, make_response
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.exceptions import HTTPException
 
 
 from app.controllers.db_handler import DB1
@@ -44,6 +43,8 @@ def create_app(environment="development"):
             'error': exc,
             "doc": exc.__doc__
         }
-        return json.dumps(error_dict, indent=4, sort_keys=True, default=str)
+        res = make_response(json.dumps(error_dict, indent=4, sort_keys=True, default=str))
+        res.mimetype = 'application/json'
+        return res
 
     return app

@@ -8,8 +8,6 @@ from flask import request
 GOOD_IPS = ['127.0.0.1']
 
 
-
-
 def ip_auth(a_func):
 
     @wraps(a_func)
