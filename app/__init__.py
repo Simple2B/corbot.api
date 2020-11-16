@@ -15,6 +15,8 @@ db = SQLAlchemy()
 
 metadata = None
 
+session = None
+
 GOOD_IPS = ['127.0.0.1']  # list of authenticated IPs, localhost is added for testing
 
 
@@ -31,6 +33,8 @@ def create_app(environment="development"):
     app.db1 = db1
     global metadata
     metadata = app.db1.metadata
+    global session
+    session = app.db1.session
     # Set app config.
     env = os.environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])

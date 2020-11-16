@@ -1,11 +1,7 @@
 
 from sqlalchemy import Table
 
-from app import metadata
-
-
-# def arguments_to_function(func):
-#     a = func.__code__.co_varnames
+from app import metadata, session
 
 
 def api_sum_example(data: dict) -> dict:
@@ -58,16 +54,6 @@ def get_client(data):
     return client_data
 
 
-MAP = {
-    "get_page_limit": get_page_limit,
-    'sum': api_sum_example,
-    'service_ident': service_ident,
-    'array': api_sum_array_example,
-    'get_page_limit': get_page_limit,
-    'get_client': get_client,
-}
-
-
 def dispatch(request_data: dict):
     method_name = request_data["request"]
     if method_name in MAP:
@@ -77,3 +63,13 @@ def dispatch(request_data: dict):
         method = MAP[method_name]
         # res_to_json converts function responce to standart format
         return dict(request=method_name, data=method(request_data["data"]))
+
+
+MAP = {
+    "get_page_limit": get_page_limit,
+    'sum': api_sum_example,
+    'service_ident': service_ident,
+    'array': api_sum_array_example,
+    'get_page_limit': get_page_limit,
+    'get_client': get_client,
+}
