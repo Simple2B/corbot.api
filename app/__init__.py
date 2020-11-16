@@ -38,13 +38,12 @@ def create_app(environment="development"):
     app.register_blueprint(main_blueprint)
 
     # Error handlers.
-    @app.errorhandler(HTTPException)
-    def handle_http_error(exc):
+    @app.errorhandler(Exception)
+    def handle_error(exc):
         error_dict = {
             'error': exc,
-            "code": exc.code
+            "doc": exc.__doc__
         }
-        # return render_template("error.html", error=exc), exc.code
         return json.dumps(error_dict, indent=4, sort_keys=True, default=str)
 
     return app

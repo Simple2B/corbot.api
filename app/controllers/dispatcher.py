@@ -75,5 +75,6 @@ def dispatch(request_data: dict):
             # abort("Unknown method")
             pass
         method = MAP[method_name]
-        # res_to_json converts function responce to standart format
         return method(request_data["data"])
+    else:
+        raise NameError('Such method is not supported')
