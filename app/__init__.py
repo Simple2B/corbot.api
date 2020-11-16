@@ -1,9 +1,8 @@
 import os
 import json
 
-from flask import Flask
+from flask import Flask, make_response
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.exceptions import HTTPException
 
 
 from app.controllers.db_handler import DB1
@@ -38,13 +37,14 @@ def create_app(environment="development"):
     app.register_blueprint(main_blueprint)
 
     # Error handlers.
-    @app.errorhandler(HTTPException)
-    def handle_http_error(exc):
+    @app.errorhandler(Exception)
+    def handle_error(exc):
         error_dict = {
             'error': exc,
-            "code": exc.code
+            "doc": exc.__doc__
         }
-        # return render_template("error.html", error=exc), exc.code
-        return json.dumps(error_dict, indent=4, sort_keys=True, default=str)
+        res = make_response(json.dumps(error_dict, indent=4, sort_keys=True, default=str))
+        res.mimetype = 'application/json'
+        return res
 
     return app
