@@ -26,6 +26,7 @@ def create_app(environment="development"):
 
     # Instantiate app.
     app = Flask(__name__)
+    global db1
     db1 = DB1()
     app.db1 = db1
     global metadata
