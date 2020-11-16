@@ -1,7 +1,7 @@
 
 from sqlalchemy import Table
 
-from app import metadata, session
+from app import metadata
 
 
 def api_sum_example(data: dict) -> dict:

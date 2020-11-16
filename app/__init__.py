@@ -1,21 +1,22 @@
 import os
 import json
 
-from sqlalchemy import Table
 
-from flask import Flask
+from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.exceptions import HTTPException
 
 
-from app.controllers.db_handler import DB1
+from app.controllers.db_handler import DB1, DB_TEST
+from app.models.vps import VPS
 
 # instantiate extensions
 db = SQLAlchemy()
-
-metadata = None
-
-session = None
+db1 = DB_TEST()
+if current_app and (not current_app.config["TESTING"]):
+    db1 = DB1()
+session = db1.session
+metadata = db1.metadata
 
 GOOD_IPS = ['127.0.0.1']  # list of authenticated IPs, localhost is added for testing
 
@@ -28,13 +29,7 @@ def create_app(environment="development"):
 
     # Instantiate app.
     app = Flask(__name__)
-    global db1
-    db1 = DB1()
     app.db1 = db1
-    global metadata
-    metadata = app.db1.metadata
-    global session
-    session = app.db1.session
     # Set app config.
     env = os.environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])
@@ -42,9 +37,7 @@ def create_app(environment="development"):
 
     global GOOD_IPS
     # Adding IPs valid for authentication
-    vps = Table("vps", app.db1.metadata, autoload=True)  # fetching IPs from db
-    qry = vps.select()
-    res = qry.execute()
+    res = app.db1.session.query(VPS).all()  # fetching IPs from db
     ips_from_db = [i.ip_address for i in res]
     GOOD_IPS += ips_from_db
 

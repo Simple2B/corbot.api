@@ -2,11 +2,11 @@ import os
 import pytest
 import json
 
-from sqlalchemy import Table
 
 from flask import current_app
 
-from app import create_app
+from app import create_app, session
+from app.models.vps import VPS
 
 
 @pytest.fixture
@@ -27,9 +27,7 @@ def test_ip_auth(client):
         ips_from_json = json.load(f)['ip_addresses']  # fetching IPs from json file
     for i in ips_from_json:
         assert i in current_app.GOOD_IPS  # checking that each IP from json file got to list of authenticated IPs
-    vps = Table("vps", current_app.db1.metadata, autoload=True)  # fetching IPs from db
-    qry = vps.select()
-    res = qry.execute()
+    res = session.query(VPS).all()  # fetching IPs from db
     ips_from_db = [i.ip_address for i in res]
     for i in ips_from_db:
         assert i in current_app.GOOD_IPS  # checking that each IP from db got to list of authenticated IPs
