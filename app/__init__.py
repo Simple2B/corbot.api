@@ -1,6 +1,8 @@
 import os
 import json
 
+from sqlalchemy import Table
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.exceptions import HTTPException
@@ -11,12 +13,15 @@ db1 = DB1()
 metadata = db1.metadata
 session = db1.session
 
-
 # instantiate extensions
 db = SQLAlchemy()
 
+# here one has to put all IPs of bots and any other that are going to be used to test this application
+GOOD_IPS = []
+
 
 def create_app(environment="development"):
+    GOOD_IPS = ['127.0.0.1']
 
     from config import config
     from app.views import (
@@ -30,6 +35,16 @@ def create_app(environment="development"):
     env = os.environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])
     config[env].configure(app)
+
+    # Adding IPs valid for authentication
+    if not app.config['TESTING']:
+        vps = Table("vps", metadata, autoload=True)
+        qry = vps.select()
+        res = qry.execute()
+        ips_from_db = [i.ip_address for i in res]
+        GOOD_IPS += ips_from_db
+    else:
+        pass
 
     # Set up extensions.
     db.init_app(app)
