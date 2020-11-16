@@ -9,20 +9,16 @@ from werkzeug.exceptions import HTTPException
 
 
 from app.controllers.db_handler import DB1
-db1 = DB1()
-metadata = db1.metadata
-session = db1.session
 
 # instantiate extensions
 db = SQLAlchemy()
 
-# here one has to put all IPs of bots and any other that are going to be used to test this application
-GOOD_IPS = []
+metadata = None
+
+GOOD_IPS = ['127.0.0.1']  # list of authenticated IPs, localhost is added for testing
 
 
 def create_app(environment="development"):
-    GOOD_IPS = ['127.0.0.1']
-
     from config import config
     from app.views import (
         main_blueprint,
@@ -30,21 +26,29 @@ def create_app(environment="development"):
 
     # Instantiate app.
     app = Flask(__name__)
-
+    db1 = DB1()
+    app.db1 = db1
+    global metadata
+    metadata = app.db1.metadata
     # Set app config.
     env = os.environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])
     config[env].configure(app)
 
+    global GOOD_IPS
     # Adding IPs valid for authentication
-    if not app.config['TESTING']:
-        vps = Table("vps", metadata, autoload=True)
-        qry = vps.select()
-        res = qry.execute()
-        ips_from_db = [i.ip_address for i in res]
-        GOOD_IPS += ips_from_db
-    else:
-        pass
+    vps = Table("vps", app.db1.metadata, autoload=True)  # fetching IPs from db
+    qry = vps.select()
+    res = qry.execute()
+    ips_from_db = [i.ip_address for i in res]
+    GOOD_IPS += ips_from_db
+
+    # address of json file relative to project root directory, it is written in .env file
+    app.IP_ADDRESSES_FILE = os.environ.get('IP_ADDRESSES_FILE')
+    with open(os.path.join('./', app.IP_ADDRESSES_FILE)) as f:
+        ips_from_json = json.load(f)['ip_addresses']  # fetching IPs from json file
+    GOOD_IPS += ips_from_json
+    app.GOOD_IPS = GOOD_IPS
 
     # Set up extensions.
     db.init_app(app)

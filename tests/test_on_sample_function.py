@@ -27,4 +27,4 @@ def test_on_sample_function(client):
     }
     response = client.post('/api', json=request_dict)
     assert response.status_code == 200
-    assert int(response.data.decode()) == 90
+    assert int(response.json['data']) == first_argument + second_argument  # checking that right response was returned
