@@ -1,10 +1,6 @@
 import json
 
-<<<<<<< HEAD
 from flask import render_template, Blueprint, request, make_response
-=======
-from flask import render_template, Blueprint, request, jsonify
->>>>>>> develop
 
 from app.controllers.dispatcher import dispatch
 from app.controllers.ip_auth import ip_auth

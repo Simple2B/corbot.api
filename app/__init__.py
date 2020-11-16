@@ -43,7 +43,7 @@ def create_app(environment="development"):
             'error': exc,
             "doc": exc.__doc__
         }
-        res = make_response(json.dumps(error_dict, indent=4, sort_keys=True, default=str))
+        res = make_response(json.dumps(error_dict, indent=4, sort_keys=True, default=str), 400)
         res.mimetype = 'application/json'
         return res
 

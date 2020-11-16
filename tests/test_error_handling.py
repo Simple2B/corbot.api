@@ -27,7 +27,7 @@ def test_wrong_function(client):
     }
     response = client.post('/api', json=request_dict)
     assert response.json['error'] == 'Such method is not supported'
-    assert response.status_code == 200
+    assert response.status_code == 400
 
 
 def test_wrong_argument(client):
@@ -42,7 +42,7 @@ def test_wrong_argument(client):
     }
     response = client.post('/api', json=request_dict)
     assert 'Inappropriate argument' in response.json['doc']
-    assert response.status_code == 200
+    assert response.status_code == 400
 
 
 def test_missing_argument(client):
@@ -55,4 +55,4 @@ def test_missing_argument(client):
     }
     response = client.post('/api', json=request_dict)
     assert 'Mapping key not found.' in response.json['doc']
-    assert response.status_code == 200
+    assert response.status_code == 400
