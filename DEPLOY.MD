@@ -1,4 +1,4 @@
-# CorboAPI. Deploy instruction
+# CorbotAPI. Deploy instruction
 This instruction for deploy Flask application.
 
 **Prerequisites:**
