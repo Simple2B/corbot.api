@@ -63,6 +63,8 @@ def dispatch(request_data: dict):
         method = MAP[method_name]
         # res_to_json converts function responce to standart format
         return dict(request=method_name, data=method(request_data["data"]))
+    else:
+        raise NameError('Such method is not supported')
 
 
 MAP = {
