@@ -1,4 +1,4 @@
-# NITRIX. Deploy instruction
+# CorboAPI. Deploy instruction
 This instruction for deploy Flask application.
 
 **Prerequisites:**
@@ -6,22 +6,6 @@ This instruction for deploy Flask application.
 * Web Server: Nginx
 * Python3
 * [uWSGI](https://en.wikipedia.org/wiki/Web_Server_Gateway_Interface)
-
-
-## Deploy from github
-
-Choice folder for deploy. E.g. : ~/NITRIX/
-For user **inv** it will be folder /home/inv/NITRIX
-Create folder:
-```
-mkdir ~/NITRIX
-```
-Project NITRIX placed in GitHub repository [here](https://github.com/simple2b/NITRIX).
-Let's download the project from GitHub:
-```
-cd ~/NITRIX
-git clone https://github.com/Simple2B/NITRIX.git .
-```
 
 ## Prepare environment
 Update and upgrade security software:
@@ -44,6 +28,9 @@ Setup necessaries packages:
 ```
 sudo apt-get install nginx python3-pip virtualenv
 ```
+
+## Deploy from GitHub
+
 Project CorbotAPI is placed in GitHub repository [here](https://github.com/Simple2B/corbot.api).
 Clone the project from GitHub:
 ```
@@ -55,7 +42,6 @@ cd corbot.api
 virtualenv -p python3 .venv
 pip install -r requirements.txt
 ```
-
 
 ## Configure WSGI
 
@@ -95,7 +81,7 @@ vacuum = true
 die-on-term = true
 ```
 
-Line `uid = inv` must contain correct user name.
+Line `uid = cbapi` must contain correct user name.
 
 ## Create Linux Service
 
