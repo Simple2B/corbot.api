@@ -4,10 +4,6 @@ from sqlalchemy import Table
 from app import metadata
 
 
-# def arguments_to_function(func):
-#     a = func.__code__.co_varnames
-
-
 def api_sum_example(data: dict) -> dict:
     res = int(data['first_argument']) + int(data['second_argument'])
     return res
@@ -58,6 +54,17 @@ def get_client(data):
     return client_data
 
 
+def dispatch(request_data: dict):
+    method_name = request_data["request"]
+    if method_name in MAP:
+        if "data" not in request_data:
+            # abort("Unknown method")
+            pass
+        method = MAP[method_name]
+        # res_to_json converts function responce to standart format
+        return dict(request=method_name, data=method(request_data["data"]))
+
+
 MAP = {
     "get_page_limit": get_page_limit,
     'sum': api_sum_example,
@@ -66,15 +73,3 @@ MAP = {
     'get_page_limit': get_page_limit,
     'get_client': get_client,
 }
-
-
-def dispatch(request_data: dict):
-    method_name = request_data["request"]
-    if method_name in MAP:
-        if "data" not in request_data:
-            # abort("Unknown method")
-            pass
-        method = MAP[method_name]
-        return method(request_data["data"])
-    else:
-        raise NameError('Such method is not supported')
