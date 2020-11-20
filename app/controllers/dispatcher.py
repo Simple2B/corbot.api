@@ -3,17 +3,26 @@ from sqlalchemy import Table
 
 from app import metadata
 
+from .register import Register
 
+
+runner = Register("Runner")
+test = Register("Test")
+
+
+@test.register
 def api_sum_example(data: dict) -> dict:
     res = int(data['first_argument']) + int(data['second_argument'])
     return res
 
 
+@test.register
 def api_sum_array_example(data: dict) -> dict:
     res = sum(data)
     return res
 
 
+@runner.register
 def service_ident(data):
     msg_subject = data['msg_subject']
     subject = str(msg_subject)

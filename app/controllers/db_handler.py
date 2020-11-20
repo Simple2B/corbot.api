@@ -63,7 +63,7 @@ class DB_TEST:
         Session = sessionmaker(bind=conn)
         self.session = Session()
         for i in range(9):
-            string = '192.0.0.' + str(i)
+            string = '192.0.0.' + str(i + 1)
             u = VPS(string)
             self.session.add(u)
         self.session.commit()

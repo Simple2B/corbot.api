@@ -40,7 +40,7 @@ def create_app(environment="development"):
     GOOD_IPS += ips_from_db
 
     # address of json file relative to project root directory, it is written in .env file
-    app.IP_ADDRESSES_FILE = os.environ.get('IP_ADDRESSES_FILE')
+    app.IP_ADDRESSES_FILE = os.environ.get('IP_ADDRESSES_FILE', "ip_addresses.json")
     with open(os.path.join('./', app.IP_ADDRESSES_FILE)) as f:
         ips_from_json = json.load(f)['ip_addresses']  # fetching IPs from json file
     GOOD_IPS += ips_from_json
