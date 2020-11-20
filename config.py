@@ -1,4 +1,5 @@
 import os
+from os import environ
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -14,6 +15,11 @@ class BaseConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
 
+    SQLALCHEMY_DATABASE_URI = os.environ.get(
+        'DEVELOP_DATABASE_URL', f'mysql+pymysql://{environ.get("DB_USER")}:{environ.get("DB_PASS")}@'
+                                f'{environ.get("DB_IP")}:{str(environ.get("DB_PORT"))}/'
+                                f'{environ.get("DB_NAME")}')
+
     @staticmethod
     def configure(app):
         # Implement this method to do further configuration on your app.
@@ -24,10 +30,6 @@ class DevelopmentConfig(BaseConfig):
     """Development configuration."""
 
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DEVEL_DATABASE_URL",
-        "sqlite:///" + os.path.join(base_dir, "database-devel.sqlite3"),
-    )
 
 
 class TestingConfig(BaseConfig):
@@ -35,18 +37,11 @@ class TestingConfig(BaseConfig):
 
     TESTING = True
     PRESERVE_CONTEXT_ON_EXCEPTION = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "TEST_DATABASE_URL",
-        "sqlite:///" + os.path.join(base_dir, "database-test.sqlite3"),
-    )
 
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", "sqlite:///" + os.path.join(base_dir, "database.sqlite3")
-    )
     WTF_CSRF_ENABLED = True
 
 
