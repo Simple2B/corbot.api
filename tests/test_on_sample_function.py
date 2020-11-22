@@ -41,6 +41,39 @@ def test_service_ident(client):
     assert response.json
     assert "data" in response.json
     assert response.json["data"] == "Support"
+    # version 1
+    response = client.post('/api', json={
+        "request": "service_ident_v1",
+        "data": {
+            "msg_subject": "help"
+        }
+    })
+    assert response.status_code == 200
+    assert response.json
+    assert "data" in response.json
+    assert response.json["data"] == "Support"
+    # version 2
+    response = client.post('/api', json={
+        "request": "service_ident_v2",
+        "data": {
+            "msg_subject": "help"
+        }
+    })
+    assert response.status_code == 200
+    assert response.json
+    assert "data" in response.json
+    assert response.json["data"] == "Support"
+    # version 3
+    response = client.post('/api', json={
+        "request": "service_ident_v3",
+        "data": {
+            "msg_subject": "help"
+        }
+    })
+    assert response.status_code == 200
+    assert response.json
+    assert "data" in response.json
+    assert response.json["data"] == "Support"
 
 
 def test_get_client(client):
