@@ -26,7 +26,7 @@ def test_wrong_function(client):
         }
     }
     response = client.post('/api', json=request_dict)
-    assert response.json['error'] == 'Such method is not supported'
+    assert response.json['error'] == 'The method [sun] is not registered'
     assert response.status_code == 400
 
 
