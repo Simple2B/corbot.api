@@ -43,6 +43,7 @@
 
      ```python
         dispatch(request_data: dict)
+        # which returns
             return dict(request=method_name, data=method(request_data["data"])
         # dispatch does all work, except converting to json
         # if you need to convert to json format:

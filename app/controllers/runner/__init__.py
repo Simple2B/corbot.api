@@ -104,7 +104,10 @@ def get_client(data):
 
 
 @runner.register()
-def send_msgs(data, page_limit, out_msg_list):
+def send_msgs(data):
+    page_limit = data['page_limit']
+    out_msg_list = data['out_msg_list']
+
     spin_cnt = 0
     for msg_data in out_msg_list:
         if spin_cnt == 0:
@@ -182,7 +185,7 @@ def fail_msg(data):
 def upd_out_msg(data):
     msg_out_id = data['msg_out_id']
     new_subject = data['subject']
-    new_message = data['message']
+    new_message = data['new_message']
     new_stamp = datetime.datetime.now()
     msg_outbound = Table("msg_outbound", db.metadata, autoload=True, autoload_with=db.engine)
     upd = (

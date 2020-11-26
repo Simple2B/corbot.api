@@ -149,7 +149,7 @@ def test_upd_out_msg(client):
         "data": {
             "msg_out_id": 1593191,
             "subject": 'Link',
-            "message": 'non5',
+            "new_message": 'non5',
         }
     })
     assert response.status_code == 200
@@ -166,6 +166,27 @@ def test_insert_outbound(client):
             "reg_num": '13262021',
             "subject": 'Link',
             "message": "jpfi",
+        }
+    })
+    assert response.status_code == 200
+    assert response.json
+    assert "data" in response.json
+
+
+def test_send_msgs(client):
+    response = client.post('/api', json={
+        "request": "send_msgs",
+        "data": {
+            "msg_in_id": 0,
+            "node_id": 203,
+            "reg_num": '13262021',
+            "message": "jpfi",
+            "msg_out_id": 1593191,
+            "subject": 'Link',
+            "new_message": 'non5',
+            "client_id": 33,
+            "page_limit": 9,
+            "out_msg_list": [1, 2, 3],
         }
     })
     assert response.status_code == 200
