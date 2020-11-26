@@ -1,5 +1,5 @@
 import datetime
-from sqlalchemy import text, Table, insert
+from sqlalchemy import Table
 
 from app import db
 from app.controllers.register import Register
@@ -8,58 +8,58 @@ from app.logger import log
 runner = Register("Runner")
 
 
-@runner.register()
-def service_ident(data):
-    msg_subject = data['msg_subject']
-    subject = str(msg_subject)
-    subject = subject.lower().strip()
+# @runner.register()
+# def service_ident(data):
+#     msg_subject = data['msg_subject']
+#     subject = str(msg_subject)
+#     subject = subject.lower().strip()
 
-    sql = text(f"SELECT svc_name from svc_keys WHERE svc_phrases LIKE '%{subject}%'")
-    res = db.engine.execute(sql)
-    return res.first()[0]
-
-
-@runner.register(name="service_ident_v1")
-def service_ident_1(data):
-    subject = data['msg_subject']
-
-    svc_keys = Table("svc_keys", db.metadata, autoload=True, autoload_with=db.engine)
-    qry = svc_keys.select()
-    res = db.engine.connect().execute(qry).fetchall()
-
-    svc_requested = "unknown"
-
-    for svc_row in res:
-        svc_data = dict(svc_row)
-        svc_name = svc_data["svc_name"]
-        svc_phrases = svc_data["svc_phrases"]
-        pos1 = svc_phrases.find(subject)
-        if pos1 >= 0:
-            svc_requested = svc_name
-            break
-    return svc_requested
+#     sql = text(f"SELECT svc_name from svc_keys WHERE svc_phrases LIKE '%{subject}%'")
+#     res = db.engine.execute(sql)
+#     return res.first()[0]
 
 
-@runner.register(name="service_ident_v2")
-def service_ident_2(data):
-    subject = data['msg_subject']
+# @runner.register(name="service_ident_v1")
+# def service_ident_1(data):
+#     subject = data['msg_subject']
 
-    svc_keys = Table("svc_keys", db.metadata, autoload=True, autoload_with=db.engine)
-    qry = svc_keys.select()
+#     svc_keys = Table("svc_keys", db.metadata, autoload=True, autoload_with=db.engine)
+#     qry = svc_keys.select()
+#     res = db.engine.connect().execute(qry).fetchall()
 
-    svc_requested = "unknown"
-    with db.engine.connect() as conn:
-        res = conn.execute(qry).fetchall()
+#     svc_requested = "unknown"
 
-        for svc_row in res:
-            svc_data = dict(svc_row)
-            svc_name = svc_data["svc_name"]
-            svc_phrases = svc_data["svc_phrases"]
-            pos1 = svc_phrases.find(subject)
-            if pos1 >= 0:
-                svc_requested = svc_name
-                break
-    return svc_requested
+#     for svc_row in res:
+#         svc_data = dict(svc_row)
+#         svc_name = svc_data["svc_name"]
+#         svc_phrases = svc_data["svc_phrases"]
+#         pos1 = svc_phrases.find(subject)
+#         if pos1 >= 0:
+#             svc_requested = svc_name
+#             break
+#     return svc_requested
+
+
+# @runner.register(name="service_ident_v2")
+# def service_ident_2(data):
+#     subject = data['msg_subject']
+
+#     svc_keys = Table("svc_keys", db.metadata, autoload=True, autoload_with=db.engine)
+#     qry = svc_keys.select()
+
+#     svc_requested = "unknown"
+#     with db.engine.connect() as conn:
+#         res = conn.execute(qry).fetchall()
+
+#         for svc_row in res:
+#             svc_data = dict(svc_row)
+#             svc_name = svc_data["svc_name"]
+#             svc_phrases = svc_data["svc_phrases"]
+#             pos1 = svc_phrases.find(subject)
+#             if pos1 >= 0:
+#                 svc_requested = svc_name
+#                 break
+#     return svc_requested
 
 
 @runner.register(name="service_ident_v3")
@@ -79,21 +79,24 @@ def service_ident_3(data):
 @runner.register()
 def get_page_limit(data):
     plan_id = data['plan_id']
-    sql = text(f"SELECT page_cnt from plans WHERE plan_id={plan_id}")
-    res = db.engine.execute(sql)
-    row = res.first()
+    plans = Table("plans", db.metadata, autoload=True, autoload_with=db.engine)
+    qry = plans.select().where(plans.c.plan_id == plan_id)
+    with db.engine.connect() as conn:
+        row = conn.execute(qry).first()
     if not row:
         return None
-    page_limit = row[0]
+    plan_data = dict(row)
+    page_limit = plan_data["page_cnt"]
     return page_limit
 
 
 @runner.register()
 def get_client(data):
     client_id = data['client_id']
-    sql = text(f"SELECT * from clients WHERE client_id={client_id}")
-    res = db.engine.execute(sql)
-    row = res.first()
+    clients = Table("clients", db.metadata, autoload=True, autoload_with=db.engine)
+    qry = clients.select().where(clients.c.client_id == client_id)
+    with db.engine.connect() as conn:
+        row = conn.execute(qry).first()
     if not row:
         return None
     client_data = dict(row)
@@ -102,34 +105,19 @@ def get_client(data):
 
 @runner.register()
 def send_msgs(data, page_limit, out_msg_list):
-    # page_cnt = len(out_msg_list)
     spin_cnt = 0
     for msg_data in out_msg_list:
         if spin_cnt == 0:
             # If first page of message, update existing message
-            out_msg = dict(msg_data)
-            new_subject = str(out_msg["subject"])
-            new_subject = new_subject.title()
-            # new_mesage = out_msg["body"]
             # Update with Page 1
             upd_out_msg(data)
         else:
             # If not first page of message, enter new message
-            out_msg = dict(msg_data)
-            new_subject = str(out_msg["subject"])
-            new_subject = new_subject.title()
-            # new_mesage = out_msg["body"]
             if spin_cnt <= page_limit:
                 insert_outbound(data)
             else:
                 log.debug("Skipping Page: Over " + str(page_limit) + " Count")
         spin_cnt += 1
-
-
-@runner.register()
-def log_run_start():
-    stamp = datetime.datetime.now()
-    return stamp
 
 
 @runner.register()
