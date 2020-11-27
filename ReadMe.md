@@ -43,8 +43,6 @@
 
      ```python
         dispatch(request_data: dict)
-        # which returns
-            return dict(request=method_name, data=method(request_data["data"])
         # dispatch does all work, except converting to json
         # if you need to convert to json format:
             json.dumps(dispatch(json_data))
@@ -64,7 +62,7 @@
         Where the first argument it's a `method name` and the second - `class name`.
 
 
-    1. If class or method do not exist will be raise Exception:
+    2. If class or method do not exist will be raise Exception:
 
         ```python
         found_class = Register.lookup('add_page', 'News')
@@ -75,3 +73,4 @@
                 raise NameError(f'The class [{class_name}] is not registered')
             NameError: The class [News] is not registered
         ```
+1.  
