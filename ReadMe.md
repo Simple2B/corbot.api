@@ -38,3 +38,39 @@
         def func_name(data):
             pass
         ```
+
+1.  Сonvert function responce to standart format using `dispatch`.
+
+     ```python
+        dispatch(request_data: dict)
+        # dispatch does all work, except converting to json
+        # if you need to convert to json format:
+            json.dumps(dispatch(json_data))
+     ```
+
+
+2.  Check for existing classes and methods using `loockup` function.
+
+    1. If class or method exist:
+
+        ```python
+        found_method = Register.lookup('get_page_limit', 'Runner')
+        print(found_method)
+        # result: "<function get_page_limit at 0x7f38dd0f7e50>"
+        ```
+
+        Where the first argument it's a `method name` and the second - `class name`.
+
+
+    2. If class or method do not exist will be raise Exception:
+
+        ```python
+        found_class = Register.lookup('add_page', 'News')
+        # result:
+            Traceback (most recent call last):
+            File "<console>", line 1, in <module>
+            File "/home/vitaly/corbot.api/app/controllers/register.py", line 33, in lookup
+                raise NameError(f'The class [{class_name}] is not registered')
+            NameError: The class [News] is not registered
+        ```
+1.  
