@@ -1,5 +1,3 @@
-import datetime
-
 import pytest
 
 from app import create_app
@@ -78,7 +76,7 @@ def test_log_run_end(client):
             "log_name": 'fireName',
             "msg_in": 1,
             "msg_out": 2,
-            "start_time": ('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p'),
+            "start_time": ('Jun 1 2005 1:33PM', '%b %d %Y %I:%M%p'),
         }
     })
     assert response.status_code == 200
@@ -102,7 +100,7 @@ def test_fail_msg(client):
     response = client.post('/api', json={
         "request": "fail_msg",
         "data": {
-            "msg_out_id": 1593191,
+            "msg_out_id": 1593191
         }
     })
     assert response.status_code == 200
@@ -153,7 +151,7 @@ def test_send_msgs(client):
             "new_message": 'non5',
             "client_id": 33,
             "page_limit": 9,
-            "out_msg_list": [1, 2, 3],
+            "out_msg_list": [1, 2, 3]
         }
     })
     assert response.status_code == 200

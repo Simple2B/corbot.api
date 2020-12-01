@@ -101,7 +101,7 @@ def msgs_to_proc(data):
     msg_outbound = Table("msg_outbound", db.metadata, autoload=True, autoload_with=db.engine)
     qry = (
             msg_outbound.select()
-            .where(msg_outbound.c.cl_date == None)
+            .where(msg_outbound.c.cl_date == None)  # noqa 711
             .where(msg_outbound.c.cb_date == None)
             .where(msg_outbound.c.node_id == node_id)
         )
