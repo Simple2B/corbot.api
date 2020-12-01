@@ -6,6 +6,7 @@ from flask_cors import cross_origin
 from app.controllers.dispatcher import dispatch
 from app.controllers.ip_auth import ip_auth
 from app.forms import TestingForm
+from app.logger import log
 
 main_blueprint = Blueprint("main", __name__)
 
@@ -21,6 +22,7 @@ def index():
 @ip_auth
 @cross_origin()
 def api():
+    log(log.INFO, "api")
     if request.json:
         json_data = request.json  # automatically converted to dict
         # dispatch does all work, except converting to json
