@@ -3,6 +3,7 @@ import json
 
 from flask import Flask, make_response
 from flask_sqlalchemy import SQLAlchemy
+from app.logger import log
 
 
 # instantiate extensions
@@ -21,6 +22,7 @@ def create_app(environment="development"):
     env = os.environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])
     config[env].configure(app)
+    log.set_level(app.config["LOG_LEVEL"])
 
     # Set up extensions.
     db.init_app(app)
