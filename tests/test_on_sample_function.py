@@ -23,8 +23,8 @@ def test_on_sample_function(client):
     request_dict = {
         "request": "sum",
         "data": {
-            "first_argument": first_argument,
-            "second_argument": second_argument
+            "a": first_argument,
+            "b": second_argument
         }
     }
     response = client.post('/api', json=request_dict)
@@ -33,41 +33,8 @@ def test_on_sample_function(client):
 
 
 def test_service_ident(client):
-    # response = client.post('/api', json={
-    #     "request": "service_ident",
-    #     "data": {
-    #         "msg_subject": "help"
-    #     }
-    # })
-    # assert response.status_code == 200
-    # assert response.json
-    # assert "data" in response.json
-    # assert response.json["data"] == "Support"
-    # # version 1
-    # response = client.post('/api', json={
-    #     "request": "service_ident_v1",
-    #     "data": {
-    #         "msg_subject": "help"
-    #     }
-    # })
-    # assert response.status_code == 200
-    # assert response.json
-    # assert "data" in response.json
-    # assert response.json["data"] == "Support"
-    # # version 2
-    # response = client.post('/api', json={
-    #     "request": "service_ident_v2",
-    #     "data": {
-    #         "msg_subject": "help"
-    #     }
-    # })
-    # assert response.status_code == 200
-    # assert response.json
-    # assert "data" in response.json
-    # assert response.json["data"] == "Support"
-    # version 3
     response = client.post('/api', json={
-        "request": "service_ident_v3",
+        "request": "service_ident",
         "data": {
             "msg_subject": "help"
         }
@@ -85,7 +52,7 @@ def test_get_client(client):
             "client_id": 30
         }
     })
-    assert response.status_code == 200
+    assert response.status_code == 200, response.json
     assert response.json
     assert "data" in response.json
     assert "age" in response.json["data"]

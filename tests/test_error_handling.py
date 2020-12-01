@@ -19,14 +19,14 @@ def test_wrong_function(client):
     first_argument = 56
     second_argument = 34
     request_dict = {
-        "request": "sun",
+        "request": "wrong function name",
         "data": {
-            "first_argument": first_argument,
-            "second_argument": second_argument
+            "a": first_argument,
+            "b": second_argument
         }
     }
     response = client.post('/api', json=request_dict)
-    assert response.json['error'] == 'The method [sun] is not registered'
+    assert response.json['error'] == 'The method [wrong function name] is not registered'
     assert response.status_code == 400
 
 
@@ -36,8 +36,8 @@ def test_wrong_argument(client):
     request_dict = {
         "request": "sum",
         "data": {
-            "first_argument": first_argument,
-            "second_argument": second_argument
+            "a": first_argument,
+            "b": second_argument
         }
     }
     response = client.post('/api', json=request_dict)
@@ -50,7 +50,7 @@ def test_missing_argument(client):
     request_dict = {
         "request": "sum",
         "data": {
-            "first_argument": first_argument
+            "a": first_argument
         }
     }
     response = client.post('/api', json=request_dict)

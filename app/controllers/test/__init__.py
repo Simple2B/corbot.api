@@ -5,7 +5,7 @@ test = Register("Test")
 
 @test.register(name="sum")
 def api_sum_example(data: dict) -> dict:
-    res = int(data['first_argument']) + int(data['second_argument'])
+    res = int(data['a']) + int(data['b'])
     return res
 
 
