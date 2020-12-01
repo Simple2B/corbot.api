@@ -17,3 +17,4 @@ Werkzeug
 WTForms
 pymysql
 cryptography
+flask_cors

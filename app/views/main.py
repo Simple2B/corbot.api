@@ -1,6 +1,7 @@
 import json
 
 from flask import render_template, Blueprint, request, make_response
+from flask_cors import cross_origin
 
 from app.controllers.dispatcher import dispatch
 from app.controllers.ip_auth import ip_auth
@@ -18,6 +19,7 @@ def index():
 
 @main_blueprint.route("/api", methods=['POST'])
 @ip_auth
+@cross_origin()
 def api():
     if request.json:
         json_data = request.json  # automatically converted to dict
