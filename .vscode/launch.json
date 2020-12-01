@@ -15,11 +15,7 @@
                 "FLASK_DEBUG": "1"
             },
             "args": [
-                "run",
-                "-h",
-                "0.0.0.0",
-                "-p",
-                "5000"
+                "run"
             ],
             "jinja": true
         }
