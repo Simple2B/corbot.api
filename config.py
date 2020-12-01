@@ -1,6 +1,9 @@
 import os
 from os import environ
+from dotenv import load_dotenv
+from app.logger import log
 
+load_dotenv()
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -10,15 +13,16 @@ class BaseConfig(object):
     APP_NAME = "Flask App"
     DEBUG_TB_ENABLED = False
     SECRET_KEY = os.environ.get(
-        "SECRET_KEY", "Ensure you set a secret key, this is important!"
+        "SECRET_KEY", "DIAOIS9zEy5hLHDxi9TE5Re0THM"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
+    LOG_LEVEL = log.INFO
 
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DEVELOP_DATABASE_URL', f'mysql+pymysql://{environ.get("DB_USER")}:{environ.get("DB_PASS")}@'
-                                f'{environ.get("DB_IP")}:{str(environ.get("DB_PORT"))}/'
-                                f'{environ.get("DB_NAME")}')
+        'DEVELOP_DATABASE_URL', f'mysql+pymysql://{environ.get("DB_USER", "user")}:{environ.get("DB_PASS", "")}@'
+                                f'{environ.get("DB_IP", "localhost")}:{environ.get("DB_PORT", "3306")}/'
+                                f'{environ.get("DB_NAME", "db")}')
 
     @staticmethod
     def configure(app):
@@ -30,6 +34,7 @@ class DevelopmentConfig(BaseConfig):
     """Development configuration."""
 
     DEBUG = True
+    LOG_LEVEL = log.DEBUG
 
 
 class TestingConfig(BaseConfig):
@@ -37,6 +42,7 @@ class TestingConfig(BaseConfig):
 
     TESTING = True
     PRESERVE_CONTEXT_ON_EXCEPTION = False
+    LOG_LEVEL = log.DEBUG
 
 
 class ProductionConfig(BaseConfig):
