@@ -73,4 +73,36 @@
                 raise NameError(f'The class [{class_name}] is not registered')
             NameError: The class [News] is not registered
         ```
-1.  
+## Example of creating request:
+1. Go to corbot_api and send test request.
+
+    1. In `Request` field add name of python function( or if you use different request `name`) 
+
+    2. In `Data` field add `data` in json-format you need to send.
+
+    An example:
+
+    ```python
+    @runner.register(name="service_ident")
+    def service_ident(data):
+        subject = data['msg_subject']
+        # enter your code
+        return responce_data
+    ```
+
+    ![alt text](read_me_images/service_indent.png)
+
+    Another example:
+
+    ```python
+    @runner.register(name="log_run_end")
+    def log_run_end(data):
+        log_name = data['log_name']
+        msg_in = data['msg_in']
+        msg_out = data['msg_out']
+        start_time = data['start_time']
+        # enter your code
+        return responce_data
+    ```
+
+    ![alt text](read_me_images/log_run_end.png)
