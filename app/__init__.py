@@ -31,14 +31,14 @@ def create_app(environment="development"):
     app.register_blueprint(main_blueprint)
 
     # Error handlers.
-    @app.errorhandler(Exception)
-    def handle_error(exc):
-        error_dict = {
-            'error': exc,
-            "doc": exc.__doc__
-        }
-        res = make_response(json.dumps(error_dict, indent=4, sort_keys=True, default=str), 400)
-        res.mimetype = 'application/json'
-        return res
+    # @app.errorhandler(Exception)
+    # def handle_error(exc):
+    #     error_dict = {
+    #         'error': exc,
+    #         "doc": exc.__doc__
+    #     }
+    #     res = make_response(json.dumps(error_dict, indent=4, sort_keys=True, default=str), 400)
+    #     res.mimetype = 'application/json'
+    #     return res
 
     return app
