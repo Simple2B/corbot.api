@@ -492,9 +492,10 @@ def dispatch(method_name: str, body: str):
     log(log.DEBUG, "dispatch")
     log(log.DEBUG, "method name: %s", method_name)
     if method_name in MAP:
+        method_name = method_name.lower()
         method = MAP[method_name]
         return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
-        
+
         # data = json.dumps(method(body))
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
