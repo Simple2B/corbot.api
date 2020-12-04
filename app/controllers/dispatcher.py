@@ -9,6 +9,19 @@ from app.logger import log
 from sqlalchemy import *
 from imdb import IMDb
 from loguru import logger
+from .wiki import SVC_Wikipedia
+from .bn import SVC_BN
+from .link import SVC_Link
+from .google import SVC_Google
+from .lyrics import SVC_Lyrics
+from .amazon import SVC_Amazon
+from .info import SVC_Info
+from .musicmap import SVC_MusicMap
+from .news import SVC_News
+from .rss import SVC_RSS
+from .scores import SVC_Scores
+from .sports import SVC_Rundown
+from .twitter import SVC_Twitter
 
 
 def cmd_weather(arg):
@@ -484,7 +497,20 @@ MAP = {
     "weather": cmd_weather,
     "stock": cmd_stocks,
     "crypto": cmd_crypto,
-    "imdb": cmd_imdb
+    "imdb": cmd_imdb,
+    "wiki": SVC_Wikipedia.cmd_wiki,
+    "link": SVC_Link.cmd_link,
+    "news": SVC_News.cmd_news,
+    "google": SVC_Google.cmd_google,
+    "twitter": SVC_Twitter.cmd_twitter,
+    "sports": SVC_Rundown.cmd_odds,
+    "scores": SVC_Scores.cmd_scores,
+    "rss": SVC_RSS.cmd_rss,
+    "musicmap": SVC_MusicMap.cmd_musicmap,
+    "info": SVC_Info.cmd_info,
+    "amazon": SVC_Amazon.cmd_amazon,
+    "lyrics": SVC_Lyrics.cmd_lyrics,
+    "bn": SVC_BN.cmd_bn,
 }
 
 
@@ -495,7 +521,6 @@ def dispatch(method_name: str, body: str):
     if method_name in MAP:
         method = MAP[method_name]
         return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
-
         # data = json.dumps(method(body))
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
