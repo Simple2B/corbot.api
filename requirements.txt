@@ -24,3 +24,7 @@ loguru==0.3.2
 wikipedia==1.4.0
 html2text==2020.1.16
 bs4==0.0.1
+newsapi-python==0.2.6
+lyricwikia==0.1.11
+html2text==2020.1.16
+feedparser==5.2.1

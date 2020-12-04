@@ -1,16 +1,25 @@
 import os
 import json
 
-from flask import Flask, make_response
+from app.controllers.db_handler import DB1, DB_TEST	
+from app.models.vps import VPS
+
+from flask import Flask, make_response, current_app
 from flask_sqlalchemy import SQLAlchemy
 from app.logger import log
 
 
 # instantiate extensions
 db = SQLAlchemy()
+db1 = DB1()
+if current_app and (current_app.config["TESTING"]):
+    db1 = DB_TEST()
+session = db1.session
+metadata = db1.metadata
 
 
 def create_app(environment="development"):
+
     from config import config
     from app.views import (
         main_blueprint,

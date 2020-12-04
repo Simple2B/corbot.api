@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String
 
-from app import db
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
 
 
-class VPS(db.Model):
+class VPS(Base):
 
     __tablename__ = 'vps'
 
