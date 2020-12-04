@@ -7,6 +7,7 @@ from sqlalchemy import *
 
 from app import metadata, session
 
+
 class SVC_Rundown:
     def get_sport_id_and_name(body):
         body_list = str(body).lower().split(" ")

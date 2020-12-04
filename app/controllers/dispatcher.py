@@ -22,7 +22,7 @@ from .rss import SVC_RSS
 from .scores import SVC_Scores
 from .sports import SVC_Rundown
 from .twitter import SVC_Twitter
-
+from .account import SVC_Account
 
 def cmd_weather(arg):
     api_key = "613fb6ff84bb0b3c7ede9da0b950aabd"
@@ -511,16 +511,20 @@ MAP = {
     "amazon": SVC_Amazon.cmd_amazon,
     "lyrics": SVC_Lyrics.cmd_lyrics,
     "bn": SVC_BN.cmd_bn,
+    "account": SVC_Account.cmd_account,
 }
 
 
-def dispatch(method_name: str, body: str):
+def dispatch(method_name: str, body: str, reg_num: int):
     log(log.DEBUG, "dispatch")
     log(log.DEBUG, "method name: %s", method_name)
     method_name = method_name.lower()
     if method_name in MAP:
         method = MAP[method_name]
-        return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
+        if method_name == "account":
+            return dict(request=method_name, data=json.dumps(method(reg_num)), indent=4, sort_keys=True, default=str)
+        else:
+            return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
         # data = json.dumps(method(body))
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
