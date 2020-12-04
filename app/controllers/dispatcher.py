@@ -3,12 +3,14 @@ import datetime
 import requests
 
 # from app import metadata, session
-import app.controllers.test  # noqa 401
-import app.controllers.runner  # noqa 401
+# import app.controllers.test  # noqa 401
+# import app.controllers.runner  # noqa 401
 from app.logger import log
 from sqlalchemy import *
 from imdb import IMDb
 from loguru import logger
+from .wiki import cmd_wiki
+from .link import cmd_link
 
 
 def cmd_weather(arg):
@@ -484,7 +486,8 @@ MAP = {
     "weather": cmd_weather,
     "stock": cmd_stocks,
     "crypto": cmd_crypto,
-    "imdb": cmd_imdb
+    "imdb": cmd_imdb,
+    "wiki": cmd_wiki
 }
 
 
