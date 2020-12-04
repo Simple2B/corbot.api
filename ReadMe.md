@@ -19,5 +19,5 @@
     1. In `Subject` enter name of sevice.
     1. In `Body` field add data you need to send.
 
-    ![alt text](read_me_images/weather.png)
+    ![alt text](read_me_images/weather.PNG)
 
