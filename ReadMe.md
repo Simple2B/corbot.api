@@ -10,7 +10,13 @@
 
 ## Exceptions
 
-1. In case some part of the program raising and exception one will get a json with ```error``` filed with a message.
+1. In case some part of the program raising and exception one will get a json with ```error``` filed with a message. E.g. entering a name of a service that is not supported will return a json 
+```yaml
+{
+    "doc": "Name not found globally.",
+    "error": "Such service is not supported"
+}
+```
 
 ## Example of creating request:
 1. Go to corbot_api and send test request.

@@ -500,4 +500,4 @@ def dispatch(method_name: str, body: str):
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
     else:
-        raise NameError('Such method is not supported')
+        raise NameError('Such service is not supported')
