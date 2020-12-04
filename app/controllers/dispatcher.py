@@ -517,6 +517,7 @@ MAP = {
 def dispatch(method_name: str, body: str):
     log(log.DEBUG, "dispatch")
     log(log.DEBUG, "method name: %s", method_name)
+    method_name = method_name.lower()
     if method_name in MAP:
         method = MAP[method_name]
         return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
@@ -524,4 +525,4 @@ def dispatch(method_name: str, body: str):
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
     else:
-        raise NameError('Such method is not supported')
+        raise NameError('Such service is not supported')
