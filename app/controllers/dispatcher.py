@@ -2,7 +2,7 @@ import json
 import datetime
 import requests
 
-# from app import metadata, session
+from app import metadata, session
 # import app.controllers.test  # noqa 401
 # import app.controllers.runner  # noqa 401
 from app.logger import log
@@ -23,6 +23,7 @@ from .scores import SVC_Scores
 from .sports import SVC_Rundown
 from .twitter import SVC_Twitter
 from .account import SVC_Account
+
 
 def cmd_weather(arg):
     api_key = "613fb6ff84bb0b3c7ede9da0b950aabd"
@@ -521,10 +522,15 @@ def dispatch(method_name: str, body: str, reg_num: int):
     method_name = method_name.lower()
     if method_name in MAP:
         method = MAP[method_name]
-        if method_name == "account":
-            return dict(request=method_name, data=json.dumps(method(reg_num)), indent=4, sort_keys=True, default=str)
-        else:
-            return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
+        try:
+            if method_name == "account":
+                return dict(request=method_name, data=json.dumps(method(reg_num)), indent=4, sort_keys=True, default=str)
+            else:
+                return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
+        except exc.InvalidRequestError:
+            log(log.ERROR, exc.InvalidRequestError)
+            session.rollback()
+            raise exc.InvalidRequestError
         # data = json.dumps(method(body))
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
