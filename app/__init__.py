@@ -6,6 +6,7 @@ from app.models.vps import VPS
 
 from flask import Flask, make_response, current_app
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
 from app.logger import log
 
 
@@ -41,10 +42,12 @@ def create_app(environment="development"):
 
     # Error handlers.
     @app.errorhandler(Exception)
-    def handle_error(exc):
+    def handle_error(ex):
+        if isinstance(ex, exc.SQLAlchemyError):
+            raise ex
         error_dict = {
-            'error': exc,
-            "doc": exc.__doc__
+            'error': ex,
+            "doc": ex.__doc__
         }
         res = make_response(json.dumps(error_dict, indent=4, sort_keys=True, default=str), 400)
         res.mimetype = 'application/json'
