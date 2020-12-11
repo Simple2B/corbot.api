@@ -548,9 +548,13 @@ def dispatch(method_name: str, body: str, reg_num: str):
         else:
             found, contact_data = CB.check_contact(client_id, CB.unparse_contact_name(method_name))
             if found == 1:
+                if contact_data['contact_type'] == 'number':
+                    svc_feature = 'sms'
+                else:
+                    svc_feature = contact_data['contact_type']
                 return dict(
                     client_id=client_id,
-                    svc_feature=contact_data['contact_type'],
+                    svc_feature=svc_feature,
                     expired=comm(client_id)
                 )
             else:
