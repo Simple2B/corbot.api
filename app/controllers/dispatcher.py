@@ -23,6 +23,9 @@ from .scores import SVC_Scores
 from .sports import SVC_Rundown
 from .twitter import SVC_Twitter
 from .account import SVC_Account
+from .runner import Runner
+from .cb import CB
+from .comm import comm
 
 
 def cmd_weather(arg):
@@ -515,18 +518,22 @@ MAP = {
     "account": SVC_Account.cmd_account,
 }
 
+human_svcs = set(["support", "billing", "alfred", "error"])
+comm_svc = set(["sms", "email"])
 
-def dispatch(method_name: str, body: str, reg_num: int):
+
+def dispatch(method_name: str, body: str, reg_num: str):
     log(log.DEBUG, "dispatch")
     log(log.DEBUG, "method name: %s", method_name)
     method_name = method_name.lower()
-    if method_name in MAP:
-        method = MAP[method_name]
+    method_name_ident = Runner.service_ident(method_name).lower()
+    if method_name_ident in MAP:
+        method = MAP[method_name_ident]
         try:
-            if method_name == "account":
-                return dict(request=method_name, data=json.dumps(method(reg_num)), indent=4, sort_keys=True, default=str)
+            if method_name_ident == "account":
+                return dict(request=method_name_ident, data=json.dumps(method(reg_num)), indent=4, sort_keys=True, default=str)
             else:
-                return dict(request=method_name, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
+                return dict(request=method_name_ident, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
         except exc.InvalidRequestError:
             log(log.ERROR, exc.InvalidRequestError)
             session.rollback()
@@ -535,4 +542,16 @@ def dispatch(method_name: str, body: str, reg_num: int):
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
     else:
-        raise NameError('Such service is not supported')
+        client_id = Runner.get_client_id(reg_num)
+        if method_name in human_svcs:
+            return dict(client_id=client_id, svc_feature='human', expired=comm(client_id))
+        else:
+            found, contact_data = CB.check_contact(client_id, CB.unparse_contact_name(method_name))
+            if found == 1:
+                return dict(
+                    client_id=client_id,
+                    svc_feature=contact_data['contact_type'],
+                    expired=comm(client_id)
+                )
+            else:
+                raise NameError('Such service is not supported')
