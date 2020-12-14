@@ -502,7 +502,7 @@ MAP = {
     "stock": cmd_stocks,
     "crypto": cmd_crypto,
     "imdb": cmd_imdb,
-    "wiki": SVC_Wikipedia.cmd_wiki,
+    "wikipedia": SVC_Wikipedia.cmd_wiki,
     "link": SVC_Link.cmd_link,
     "news": SVC_News.cmd_news,
     "google": SVC_Google.cmd_google,
