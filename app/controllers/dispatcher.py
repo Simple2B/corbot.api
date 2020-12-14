@@ -531,9 +531,21 @@ def dispatch(method_name: str, body: str, reg_num: str):
         method = MAP[method_name_ident]
         try:
             if method_name_ident == "account":
-                return dict(request=method_name_ident, data=json.dumps(method(reg_num)), indent=4, sort_keys=True, default=str)
+                return dict(
+                    request=method_name_ident,
+                    data=method(reg_num).replace('\r\n', '\n'),
+                    indent=4,
+                    sort_keys=True,
+                    default=str
+                )
             else:
-                return dict(request=method_name_ident, data=json.dumps(method(body)), indent=4, sort_keys=True, default=str)
+                return dict(
+                    request=method_name_ident,
+                    data=method(body).replace('\r\n', '\n'),
+                    indent=4,
+                    sort_keys=True,
+                    default=str
+                )
         except exc.InvalidRequestError:
             log(log.ERROR, exc.InvalidRequestError)
             session.rollback()
