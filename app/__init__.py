@@ -7,6 +7,7 @@ from app.models.vps import VPS
 from flask import Flask, make_response, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc
+from pymysql import err
 from app.logger import log
 
 
@@ -44,6 +45,8 @@ def create_app(environment="development"):
     @app.errorhandler(Exception)
     def handle_error(ex):
         if isinstance(ex, exc.SQLAlchemyError):
+            raise ex
+        if isinstance(ex, err.Error):
             raise ex
         error_dict = {
             'error': ex,
