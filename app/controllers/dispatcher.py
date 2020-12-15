@@ -557,8 +557,9 @@ def dispatch(method_name: str, body: str, reg_num: str):
         client_id = Runner.get_client_id(reg_num)
         if method_name in human_svcs:
             return dict(client_id=client_id, svc_feature='human', expired=comm(client_id))
-        else:
-            found, contact_data = CB.check_contact(client_id, CB.unparse_contact_name(method_name))
+        contact_name = CB.unparse_contact_name(method_name)
+        if contact_name:
+            found, contact_data = CB.check_contact(client_id, contact_name)
             if found == 1:
                 if contact_data['contact_type'] == 'number':
                     svc_feature = 'sms'
@@ -570,4 +571,10 @@ def dispatch(method_name: str, body: str, reg_num: str):
                     expired=comm(client_id)
                 )
             else:
-                raise NameError('Such service is not supported')
+                return dict(
+                    client_id=client_id,
+                    svc_feature="No such contact for this user",
+                    expired=comm(client_id)
+                )
+        else:
+            raise NameError('Such service is not supported')
