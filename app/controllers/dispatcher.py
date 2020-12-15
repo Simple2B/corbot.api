@@ -576,5 +576,17 @@ def dispatch(method_name: str, body: str, reg_num: str):
                     svc_feature="No such contact for this user",
                     expired=comm(client_id)
                 )
+        elif '@' in method_name:
+            return dict(
+                client_id=client_id,
+                svc_feature="email",
+                expired=comm(client_id)
+            )
+        elif method_name.isdigit():
+            return dict(
+                client_id=client_id,
+                svc_feature="sms",
+                expired=comm(client_id)
+            )
         else:
             raise NameError('Such service is not supported')
