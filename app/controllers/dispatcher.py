@@ -530,10 +530,11 @@ def dispatch(method_name: str, body: str, reg_num: str):
     if method_name_ident in MAP:
         method = MAP[method_name_ident]
         try:
+            subject, data = method(reg_num)
             if method_name_ident == "account":
                 return dict(
                     request=method_name_ident,
-                    data=method(reg_num).replace('\r\n', '\n'),
+                    data=data.replace('\r\r', '\n\n').replace('\r', '\n'),
                     indent=4,
                     sort_keys=True,
                     default=str
@@ -546,10 +547,9 @@ def dispatch(method_name: str, body: str, reg_num: str):
                     sort_keys=True,
                     default=str
                 )
-        except exc.InvalidRequestError:
-            log(log.ERROR, exc.InvalidRequestError)
-            session.rollback()
-            raise exc.InvalidRequestError
+        except Exception as e:
+            log(log.ERROR, e)
+            raise e
         # data = json.dumps(method(body))
         # data = [ i.split('|') for i in method(body).split('\r\n')]
         # return dict(request=method_name, data=data)
