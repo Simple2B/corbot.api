@@ -529,9 +529,9 @@ def dispatch(method_name: str, body: str, reg_num: str):
     method_name_ident = Runner.service_ident(method_name).lower()
     if method_name_ident in MAP:
         method = MAP[method_name_ident]
-        try:
-            subject, data = method(reg_num)
+        try:  
             if method_name_ident == "account":
+                subject, data = method(reg_num)
                 return dict(
                     request=method_name_ident,
                     data=data.replace('\r\r', '\n\n').replace('\r', '\n'),
