@@ -1,16 +1,18 @@
-import lyricwikia
+from lyricsgenius import Genius
 
 
 class SVC_Lyrics:
     def cmd_lyrics(arg):
+        token = "47eX0yhBx2cDhrs1n7530NrDmSVJbuCmgCORJRDv9wvIbtbKRAK4BPP2_uoKVaN3"
+        genius = Genius(token)
         search_phrase = str(arg)
         try:
             full_input = search_phrase.lower()
             full_input = full_input.split(",")
             artist_input = full_input[0]
             song_input = full_input[1]
-            lyrics = lyricwikia.get_lyrics(artist_input, song_input)
-            text_data = lyrics
+            result = genius.search_song(song_input, artist_input)
+            text_data = result.lyrics
         except Exception as E:
             text_data = (
                 "Lyric search failed, please check the spelling of the artist and song title. Please note, "

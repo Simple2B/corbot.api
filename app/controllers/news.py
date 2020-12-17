@@ -181,12 +181,12 @@ class SVC_News:
                 channel_select_space = channel_select.rfind(" ")
                 channel_select = channel_select[channel_select_space:]
                 try:
-                    choices = [1,2]
+                    choices = [1, 2]
                     use_api = random.choice(choices)
                     if use_api == 1:
-                        api_key="484fd5560b4549dbacd121c84ce9127d"
+                        api_key = "b7b41b1e7e86412488beaf2768eebe29"
                     else:
-                        api_key = "33eae93b4ec140e49a09338b9f895b48"
+                        api_key = "b7b41b1e7e86412488beaf2768eebe29"
 
                     newsapi = NewsApiClient(
                         api_key=api_key)
@@ -198,11 +198,12 @@ class SVC_News:
                         channel_list[chan - 1]
                     )
                     for key in x["articles"]:
+                        content = str(key["content"])
                         text_data += "Title: " + str(key["title"]) + "[EOL]"
                         text_data += "Description: " + \
                             str(key["description"]) + "[EOL]"
                         text_data += "Content: " + \
-                            str(key["content"]) + "[EOL]"
+                            content[0:254] + "[EOL]"
                         text_data += "URL: " + key["url"] + "[EOL]"
                         if len(key["url"]) > 10:
                             text_data += "Link Code: " + SVC_News.proc_link(
