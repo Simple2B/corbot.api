@@ -29,3 +29,4 @@ lyricwikia==0.1.11
 html2text==2020.1.16
 feedparser==5.2.1
 pandas==0.25.2
+lyricsgenius==2.0.2
