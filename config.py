@@ -10,7 +10,7 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 class BaseConfig(object):
     """Base configuration."""
 
-    APP_NAME = "Flask App"
+    APP_NAME = "Corbot API"
     DEBUG_TB_ENABLED = False
     SECRET_KEY = os.environ.get(
         "SECRET_KEY", "DIAOIS9zEy5hLHDxi9TE5Re0THM"

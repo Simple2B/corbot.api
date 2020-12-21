@@ -35,8 +35,9 @@ def api():
     form = TestingForm()  # form to test from admin dashboard
     if form.validate_on_submit():
         body = form.Body.data
+        reg_num = form.RegNumber.data
         method_name = form.Subject.data
-        res = make_response(json.dumps(dispatch(method_name, body), indent=4, sort_keys=True, default=str), 200)
+        res = make_response(json.dumps(dispatch(method_name, body, reg_num), indent=4, sort_keys=True, default=str), 200)
         res.mimetype = 'application/json'
         return res
     return {}
